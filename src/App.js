@@ -2,24 +2,57 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+const products = [
+  {
+    name:'iPad',
+    price: '200'
+  },
+  {
+    name:'iPhone',
+    price: '650'
+  }
+];
+
+localStorage.setItem('products', JSON.stringify(products));
+
 class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      products: []
+    };
+  }
+
+  componentWillMount(){
+    this.getProducts();
+  }
+
+  getProducts(){
+    const products = JSON.parse(localStorage.getItem('products'));
+    this.setState({ products });
+  }
+
   render() {
+    const title = 'Products Manager'; 
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>{title}</h1>
+
+        {
+          this.state.products.map(product => {
+            return(
+              <div key={product.name}>
+                <span>{product.name}</span> 
+                {' | '} 
+                <span>{product.price}</span>
+                {' | '} 
+                <button>Delete</button>
+              </div>
+            );
+          })
+        }
       </div>
     );
   }
