@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ProductItem from './ProductItem';
 
 const products = [
   {
@@ -20,17 +21,32 @@ class App extends Component {
     super(props);
 
     this.state = {
-      products: []
+      products: JSON.parse(localStorage.getItem('products'))
     };
+
+    this.onDelete = this.onDelete.bind(this);
   }
 
   componentWillMount(){
-    this.getProducts();
+    const products = this.getProducts();
+
+    this.setState({ products });
+
   }
 
   getProducts(){
-    const products = JSON.parse(localStorage.getItem('products'));
-    this.setState({ products });
+    return this.state.products;
+  }
+
+  onDelete(name){
+    const products = this.getProducts();
+
+    const filteredProducts = products.filter(product =>{
+      return product.name !== name;
+    });
+
+    this.setState({ products: filteredProducts});
+    console.log(filteredProducts);
   }
 
   render() {
@@ -43,13 +59,12 @@ class App extends Component {
         {
           this.state.products.map(product => {
             return(
-              <div key={product.name}>
-                <span>{product.name}</span> 
-                {' | '} 
-                <span>{product.price}</span>
-                {' | '} 
-                <button>Delete</button>
-              </div>
+              <ProductItem 
+                key={product.name}
+                name={product.name}
+                price={product.price}
+                onDelete={this.onDelete}
+              />
             );
           })
         }
