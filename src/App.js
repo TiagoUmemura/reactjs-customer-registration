@@ -27,6 +27,7 @@ class App extends Component {
 
     this.onDelete = this.onDelete.bind(this);
     this.onAdd = this.onAdd.bind(this);
+    this.onEditSubmit = this.onEditSubmit.bind(this);
   }
 
   componentWillMount(){
@@ -59,6 +60,23 @@ class App extends Component {
     this.setState({ products });
   }
 
+  //originalName is the parameter to search the modified product
+  onEditSubmit(name, price, originalName){
+    let products = this.getProducts();
+
+    //search for the product name and change attributes (name and price) for product that matches the name product
+    products = products.map(product => {
+      if(product.name === originalName){
+        product.name = name;
+        product.price = price;
+      }
+
+      return product;
+    })
+
+    this.setState({ products });
+  }
+
   render() {
     const title = 'Products Manager'; 
 
@@ -77,6 +95,7 @@ class App extends Component {
                 name={product.name}
                 price={product.price}
                 onDelete={this.onDelete}
+                onEditSubmit={this.onEditSubmit}
               />
             );
           })
