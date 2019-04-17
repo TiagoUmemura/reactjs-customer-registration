@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ProductItem from './ProductItem';
 import AddProduct from './AddProduct';
+import axios from 'axios'
 
 const products = [
   {
@@ -21,8 +21,13 @@ class App extends Component {
   constructor(props){
     super(props);
 
+    let products = [];
+
+    axios.get('http://localhost:3000/products')
+    .then(response => products = response.data);
+
     this.state = {
-      products: JSON.parse(localStorage.getItem('products'))
+      products: products
     };
 
     this.onDelete = this.onDelete.bind(this);
@@ -38,6 +43,8 @@ class App extends Component {
   }
 
   getProducts(){
+    axios.get('http://localhost:3000/products')
+    .then(response => this.setState({ products: response.data }));
     return this.state.products;
   }
 
@@ -53,11 +60,16 @@ class App extends Component {
   }
 
   onAdd(name, price) {
-    const products = this.getProducts();
+    let product = {};
+    product.name = name;
+    product.price = price;
 
-    products.push({name, price});
-
-    this.setState({ products });
+    axios.post('http://localhost:3000/products', product)
+    .then(res => {
+      console.log(res.data);
+      let products = this.getProducts();
+      this.setState({ products });
+    });
   }
 
   //originalName is the parameter to search the modified product
