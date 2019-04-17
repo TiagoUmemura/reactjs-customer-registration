@@ -27,7 +27,7 @@ class ProductItem extends Component {
   onEditSubmit(event){
     event.preventDefault();
 
-    this.props.onEditSubmit(this.nameInput.value, this.priceInput.value, this.props.name);
+    this.props.onEditSubmit(this.nameInput.value, this.priceInput.value, this.props.id);
 
     this.setState({ isEdit : false});
   }

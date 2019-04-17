@@ -73,20 +73,18 @@ class App extends Component {
   }
 
   //originalName is the parameter to search the modified product
-  onEditSubmit(name, price, originalName){
-    let products = this.getProducts();
+  onEditSubmit(name, price, id){
+    let product = {};
+    product.name = name;
+    product.price = price;
+    product.id = id;
 
-    //search for the product name and change attributes (name and price) for product that matches the name product
-    products = products.map(product => {
-      if(product.name === originalName){
-        product.name = name;
-        product.price = price;
-      }
-
-      return product;
-    })
-
-    this.setState({ products });
+    axios.put(`http://localhost:3000/products/${id}`, product)
+    .then(res => {
+      console.log(res.data);
+      let products = this.getProducts();
+      this.setState({ products });
+    });
   }
 
   render() {
