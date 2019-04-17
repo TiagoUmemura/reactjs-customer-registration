@@ -14,9 +14,10 @@ class ProductItem extends Component {
   }
 
   onDelete(){
-    const { onDelete, name } = this.props;
+    //get Id parameter passed on app.js from props
+    const { id } = this.props;
 
-    this.props.onDelete(name);
+    this.props.onDelete(id);
   }
 
   onEdit(){

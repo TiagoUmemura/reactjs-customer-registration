@@ -48,15 +48,15 @@ class App extends Component {
     return this.state.products;
   }
 
-  onDelete(name){
-    const products = this.getProducts();
+  onDelete(id){
 
-    const filteredProducts = products.filter(product =>{
-      return product.name !== name;
-    });
+    axios.delete(`http://localhost:3000/products/${id}`)
+    .then(res => {
+      console.log(res.data);
+      const products = this.getProducts();
+      this.setState({ products });
+    })
 
-    this.setState({ products: filteredProducts});
-    console.log(filteredProducts);
   }
 
   onAdd(name, price) {
@@ -106,6 +106,7 @@ class App extends Component {
                 key={product.name}
                 name={product.name}
                 price={product.price}
+                id={product.id}
                 onDelete={this.onDelete}
                 onEditSubmit={this.onEditSubmit}
               />

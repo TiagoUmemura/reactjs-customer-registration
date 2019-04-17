@@ -23,9 +23,14 @@
       "price": "700"
     },
     {
-      "name": "asdasd",
-      "price": "123123",
-      "id": 3
+      "name": "danone",
+      "price": "300",
+      "id": 4
+    },
+    {
+      "name": "testid",
+      "price": "1223",
+      "id": 5
     }
   ]
 }
