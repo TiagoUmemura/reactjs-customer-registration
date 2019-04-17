@@ -1,0 +1,21 @@
+{
+    "users": [{
+        "id": 1,
+        "name": "roy",
+        "location": "india"
+    }, {
+        "id": 2,
+        "name": "sam",
+        "location": "wales"
+    }],
+
+    "products": [{
+        "id":1,
+        "name": "test",
+        "location": "india"
+    }, {
+        "id": 2,
+        "name": "testt",
+        "location": "wales"
+    }]
+}
