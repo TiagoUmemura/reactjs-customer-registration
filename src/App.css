@@ -18,6 +18,10 @@
   color: white;
 }
 
+.recharts-wrapper {
+  margin : 0 auto;
+}
+
 .App-link {
   color: #61dafb;
 }

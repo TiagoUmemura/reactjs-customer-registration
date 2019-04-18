@@ -36,7 +36,7 @@ class ProductItem extends Component {
     const { name, price } = this.props;
 
     return (
-      <div>
+      <tbody>
         {
           //verify if is on edit mode or normal mode
           this.state.isEdit 
@@ -49,20 +49,15 @@ class ProductItem extends Component {
               </form>
 
             ) : (
-
-              <div>
-                <span>{name}</span> 
-                {' | '} 
-                <span>{price}</span>
-                {' | '} 
-                <button onClick={this.onEdit}>Edit</button>
-                {' | '} 
-                <button onClick={this.onDelete}>Delete</button>
-              </div>
-
+              <tr>
+                <th scope="row">{name}</th>
+                <td>{price}</td>
+                <td><button onClick={this.onEdit}>Edit</button></td>
+                <td>@<button onClick={this.onDelete}>Delete</button></td>
+              </tr>
             )
         }
-      </div>
+      </tbody>
     );
   }
 }

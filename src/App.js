@@ -3,6 +3,7 @@ import './App.css';
 import ProductItem from './ProductItem';
 import AddProduct from './AddProduct';
 import axios from 'axios'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
 const products = [
   {
@@ -14,6 +15,11 @@ const products = [
     price: '650'
   }
 ];
+
+const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},
+  {name: 'Page B', uv: 600, pv: 2300, amt: 2400},
+  {name: 'Page C', uv: 450, pv: 2800, amt: 2400},
+  {name: 'Page C', uv: 500, pv: 2800, amt: 2400}];
 
 localStorage.setItem('products', JSON.stringify(products));
 
@@ -91,12 +97,21 @@ class App extends Component {
     const title = 'Products Manager'; 
 
     return (
-      <div className="App">
+      <div className="App center-content">
         <h1>{title}</h1>
 
         <AddProduct
           onAdd = {this.onAdd}
         />
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+          </thead>
         {
           this.state.products.map(product => {
             return(
@@ -111,6 +126,15 @@ class App extends Component {
             );
           })
         }
+        </table>
+
+        <LineChart width={600} height={300} data={data} margin={{ top: 35, right: 60, bottom: 5, left: 0 }}>
+          <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+        </LineChart>
       </div>
     );
   }
