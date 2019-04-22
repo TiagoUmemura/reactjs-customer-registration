@@ -26,6 +26,15 @@
   color: #61dafb;
 }
 
+.wrapper {
+  margin-right: auto; /* 1 */
+  margin-left:  auto; /* 1 */
+  display: flex;
+
+  padding-right: 10px; /* 3 */
+  padding-left:  10px; /* 3 */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

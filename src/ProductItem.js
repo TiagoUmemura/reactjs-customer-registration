@@ -36,28 +36,40 @@ class ProductItem extends Component {
     const { name, price } = this.props;
 
     return (
-      <tbody>
-        {
-          //verify if is on edit mode or normal mode
-          this.state.isEdit 
-          ? (
+          // verify if is on edit mode or normal mode
+        <div className="row mt-2">
+          {
+            this.state.isEdit
+                ? (
+                    <form onSubmit={this.onEditSubmit} className="wrapper">
+                      <div className="col-auto">
+                        <input placeholder="Name"
+                        ref={nameInput => this.nameInput = nameInput}
+                        defaultValue={name} className="form-control"/>
+                      </div>
+                      <div className="col-auto">
+                        <input placeholder="Price"
+                        ref={priceInput => this.priceInput = priceInput}
+                        defaultValue={price} className="form-control"/>
+                      </div>
+                      <button className="btn btn-primary">Save</button>
+                    </form>
 
-              <form onSubmit={this.onEditSubmit}>
-                <input placeholder="Name" ref={nameInput => this.nameInput = nameInput} defaultValue={name}/>
-                <input placeholder="Price" ref={priceInput => this.priceInput = priceInput} defaultValue={price}/>
-                <button>Save</button>
-              </form>
+                ) : (
+                    <>
+                      <div className="col-sm">{name}</div>
+                      <div className="col-sm">{price}</div>
+                      <div className="col-sm">
+                        <button className="btn btn-primary" onClick={this.onEdit}>Edit</button>
+                      </div>
+                      <div className="col-sm">
+                        <button className="btn btn-primary" onClick={this.onDelete}>Delete</button>
+                      </div>
+                    </>
+                )
+          }
+        </div>
 
-            ) : (
-              <tr>
-                <th scope="row">{name}</th>
-                <td>{price}</td>
-                <td><button onClick={this.onEdit}>Edit</button></td>
-                <td>@<button onClick={this.onDelete}>Delete</button></td>
-              </tr>
-            )
-        }
-      </tbody>
     );
   }
 }

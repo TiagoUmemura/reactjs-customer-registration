@@ -103,31 +103,32 @@ class App extends Component {
         <AddProduct
           onAdd = {this.onAdd}
         />
-        <table class="table">
-          <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-          </thead>
-        {
-          this.state.products.map(product => {
-            return(
-              <ProductItem 
-                key={product.name}
-                name={product.name}
-                price={product.price}
-                id={product.id}
-                onDelete={this.onDelete}
-                onEditSubmit={this.onEditSubmit}
-              />
-            );
-          })
-        }
-        </table>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm alert alert-info">Product List</div>
+          </div>
 
+          {
+            this.state.products.map(product => {
+              return(
+                <ProductItem
+                  key={product.name}
+                  name={product.name}
+                  price={product.price}
+                  id={product.id}
+                  onDelete={this.onDelete}
+                  onEditSubmit={this.onEditSubmit}
+                />
+              );
+            })
+          }
+        </div>
+
+        <div className="container">
+          <div className="row mt-3">
+            <div className="col-sm alert alert-info">Order numbers chart</div>
+          </div>
+        </div>
         <LineChart width={600} height={300} data={data} margin={{ top: 35, right: 60, bottom: 5, left: 0 }}>
           <Line type="monotone" dataKey="uv" stroke="#8884d8" />
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
