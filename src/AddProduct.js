@@ -20,11 +20,14 @@ class AddProduct extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
+        <div className="container">
         <h3>Add Product</h3>
-        <input placeholder="Name" ref={nameInput => this.nameInput = nameInput}/>
-        <input placeholder="Price" ref={priceInput => this.priceInput = priceInput}/>
-
-        <button>Add</button>
+        <div className="form-row">
+          <input className="form-control col-5" placeholder="Name" ref={nameInput => this.nameInput = nameInput}/>
+          <input className="form-control col-5" placeholder="Price" ref={priceInput => this.priceInput = priceInput}/>
+          <button className="btn btn-primary col-2">Add</button>
+        </div>
+        </div>
         <hr />
       </form>
     );

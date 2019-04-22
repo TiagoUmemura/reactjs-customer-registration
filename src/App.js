@@ -98,7 +98,7 @@ class App extends Component {
 
     return (
       <div className="App center-content">
-        <h1>{title}</h1>
+        <h1 className="alert alert-info">{title}</h1>
 
         <AddProduct
           onAdd = {this.onAdd}
