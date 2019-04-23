@@ -11,26 +11,26 @@
       "location": "wales"
     }
   ],
-  "products": [
+  "customers": [
     {
-      "name": "Iphone",
-      "price": "600",
-      "id": 1
+      "name": "may may",
+      "email": "may@gmail.com",
+      "telefone": "(44) 997068567",
+      "endereco": "Rua asda",
+      "bairro": "dsawdwa",
+      "numero": "1231234",
+      "cidade": "asdasdawd",
+      "id": 8
     },
     {
-      "name": "Ipad",
-      "price": "400",
-      "id": 2
-    },
-    {
-      "name": "danone",
-      "price": "50",
-      "id": 4
-    },
-    {
-      "name": "testid",
-      "price": "1223",
-      "id": 5
+      "name": "Test tester",
+      "email": "tester@gmail.com",
+      "telefone": "(44) 99870-6785",
+      "endereco": "Rua testre",
+      "bairro": "Vila Caer",
+      "numero": "113",
+      "cidade": "Campo Mourao",
+      "id": 9
     }
   ]
 }
