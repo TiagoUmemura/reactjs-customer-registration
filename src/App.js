@@ -5,26 +5,26 @@ import AddProduct from './AddProduct';
 import axios from 'axios'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
-const products = [];
+const customers = [];
 
 const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},
   {name: 'Page B', uv: 600, pv: 2300, amt: 2400},
   {name: 'Page C', uv: 450, pv: 2800, amt: 2400},
   {name: 'Page C', uv: 500, pv: 2800, amt: 2400}];
 
-localStorage.setItem('products', JSON.stringify(products));
+localStorage.setItem('products', JSON.stringify(customers));
 
 class App extends Component {
   constructor(props){
     super(props);
 
-    let products = [];
+    let customers = [];
 
-    axios.get('http://localhost:3000/products')
-    .then(response => products = response.data);
+    axios.get('http://localhost:3000/customers')
+    .then(response => customers = response.data);
 
     this.state = {
-      products: products
+      customers: customers
     };
 
     this.onDelete = this.onDelete.bind(this);
@@ -33,54 +33,42 @@ class App extends Component {
   }
 
   componentWillMount(){
-    const products = this.getProducts();
+    const customers = this.getCustomers();
 
-    this.setState({ products });
-
+    this.setState({ customers });
   }
 
-  getProducts(){
-    axios.get('http://localhost:3000/products')
-    .then(response => this.setState({ products: response.data }));
-    return this.state.products;
+  getCustomers(){
+    axios.get('http://localhost:3000/customers')
+    .then(response => this.setState({ customers: response.data }));
+    return this.state.customers;
   }
 
   onDelete(id){
-
-    axios.delete(`http://localhost:3000/products/${id}`)
+    axios.delete(`http://localhost:3000/customers/${id}`)
     .then(res => {
       console.log(res.data);
-      const products = this.getProducts();
-      this.setState({ products });
+      const customers = this.getCustomers();
+      this.setState({ customers });
     })
 
   }
 
-  onAdd(name, price) {
-    let product = {};
-    product.name = name;
-    product.price = price;
-
-    axios.post('http://localhost:3000/products', product)
+  onAdd(customer) {
+    axios.post('http://localhost:3000/customers', customer)
     .then(res => {
       console.log(res.data);
-      let products = this.getProducts();
-      this.setState({ products });
+      let customers = this.getCustomers();
+      this.setState({ customers });
     });
   }
 
-  //originalName is the parameter to search the modified product
-  onEditSubmit(name, price, id){
-    let product = {};
-    product.name = name;
-    product.price = price;
-    product.id = id;
-
-    axios.put(`http://localhost:3000/products/${id}`, product)
+  onEditSubmit(customer, id) {
+    axios.put(`http://localhost:3000/customers/${id}`, customer)
     .then(res => {
       console.log(res.data);
-      let products = this.getProducts();
-      this.setState({ products });
+      let customers = this.getCustomers();
+      this.setState({ customers });
     });
   }
 
@@ -96,17 +84,18 @@ class App extends Component {
         />
         <div className="container">
           <div className="row">
-            <div className="col-sm alert alert-info">Product List</div>
+            <div className="col-sm alert alert-info">Customer List</div>
           </div>
 
           {
-            this.state.products.map(product => {
+            this.state.customers.map(customer => {
               return(
                 <ProductItem
-                  key={product.name}
-                  name={product.name}
-                  price={product.price}
-                  id={product.id}
+                  key={customer.name}
+                  name={customer.name}
+                  email={customer.email}
+                  id={customer.id}
+                  customerItem={customer}
                   onDelete={this.onDelete}
                   onEditSubmit={this.onEditSubmit}
                 />
