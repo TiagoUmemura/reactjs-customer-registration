@@ -5,16 +5,7 @@ import AddProduct from './AddProduct';
 import axios from 'axios'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
-const products = [
-  {
-    name:'iPad',
-    price: '200'
-  },
-  {
-    name:'iPhone',
-    price: '650'
-  }
-];
+const products = [];
 
 const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},
   {name: 'Page B', uv: 600, pv: 2300, amt: 2400},
@@ -94,10 +85,10 @@ class App extends Component {
   }
 
   render() {
-    const title = 'Products Manager'; 
+    const title = 'Customer Manager';
 
     return (
-      <div className="App center-content">
+      <div className="App">
         <h1 className="alert alert-info">{title}</h1>
 
         <AddProduct
