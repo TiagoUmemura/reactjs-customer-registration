@@ -12,16 +12,11 @@ const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},
   {name: 'Page C', uv: 450, pv: 2800, amt: 2400},
   {name: 'Page C', uv: 500, pv: 2800, amt: 2400}];
 
-localStorage.setItem('products', JSON.stringify(customers));
-
 class App extends Component {
   constructor(props){
     super(props);
 
     let customers = [];
-
-    axios.get('http://localhost:3000/customers')
-    .then(response => customers = response.data);
 
     this.state = {
       customers: customers
@@ -30,36 +25,35 @@ class App extends Component {
     this.onDelete = this.onDelete.bind(this);
     this.onAdd = this.onAdd.bind(this);
     this.onEditSubmit = this.onEditSubmit.bind(this);
+    this.filterByName = this.filterByName.bind(this);
   }
 
   componentWillMount(){
     const customers = this.getCustomers();
-
     this.setState({ customers });
   }
 
   getCustomers(){
     axios.get('http://localhost:3000/customers')
     .then(response => this.setState({ customers: response.data }));
-    return this.state.customers;
   }
 
   onDelete(id){
     axios.delete(`http://localhost:3000/customers/${id}`)
     .then(res => {
       console.log(res.data);
-      const customers = this.getCustomers();
-      this.setState({ customers });
+      this.getCustomers();
+      //this.setState({ customers });
     })
 
   }
 
   onAdd(customer) {
-    axios.post('http://localhost:3000/customers', customer)
+    axios.post('http://localhost:3000/customers',customer)
     .then(res => {
       console.log(res.data);
-      let customers = this.getCustomers();
-      this.setState({ customers });
+      this.getCustomers();
+      //this.setState({ customers });
     });
   }
 
@@ -67,10 +61,16 @@ class App extends Component {
     axios.put(`http://localhost:3000/customers/${id}`, customer)
     .then(res => {
       console.log(res.data);
-      let customers = this.getCustomers();
-      this.setState({ customers });
+      this.getCustomers();
     });
   }
+
+  filterByName(event) {
+    let filterBy = event.target.value.toLowerCase();
+    axios.get('http://localhost:3000/customers?name_like=' + filterBy)
+    .then(response => this.setState({ customers: response.data }));
+  }
+
 
   render() {
     const title = 'Customer Manager';
@@ -87,8 +87,21 @@ class App extends Component {
             <div className="col-sm alert alert-info">Customer List</div>
           </div>
 
+          <div className="container">
+            <div className="input-group mb-4">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Filter by name: </div>
+              </div>
+              <input type="text" id="filter"
+                   onChange={this.filterByName}
+                   ref={filter => this.filter = filter}
+                   placeholder="Digite o nome"
+                   className="form-control"/>
+            </div>
+          </div>
+
           {
-            this.state.customers.map(customer => {
+            this.state.customers ? this.state.customers.map(customer => {
               return(
                 <ProductItem
                   key={customer.name}
@@ -100,7 +113,7 @@ class App extends Component {
                   onEditSubmit={this.onEditSubmit}
                 />
               );
-            })
+            }) : <p>Não tem nada</p>
           }
         </div>
 

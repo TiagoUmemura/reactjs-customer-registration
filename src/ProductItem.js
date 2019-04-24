@@ -92,7 +92,8 @@ class ProductItem extends Component {
                                  defaultValue={customer.cidade} className="form-control"/>
                         </div>
                       </div>
-                      <button className="btn btn-primary">Save</button>
+
+                      <button className="btn btn-outline-success">Save</button>
                     </form>
 
                 ) : (
@@ -105,6 +106,7 @@ class ProductItem extends Component {
                       <div className="col-sm">
                         <button className="btn btn-primary" onClick={this.onDelete}>Delete</button>
                       </div>
+                      <hr />
                     </>
                 )
           }
