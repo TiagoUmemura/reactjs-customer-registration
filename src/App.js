@@ -4,13 +4,22 @@ import ProductItem from './ProductItem';
 import AddProduct from './AddProduct';
 import axios from 'axios'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { Pagination, Table } from 'antd';
 
-const customers = [];
+const columns = [{
+  title: 'Nome',
+  dataIndex: 'name',
+  key: 'id',
+}, {
+  title: 'Email',
+  dataIndex: 'email',
+  key: 'email',
+}];
 
 const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},
   {name: 'Page B', uv: 600, pv: 2300, amt: 2400},
   {name: 'Page C', uv: 450, pv: 2800, amt: 2400},
-  {name: 'Page C', uv: 500, pv: 2800, amt: 2400}];
+  {name: 'Page D', uv: 500, pv: 2800, amt: 2400}];
 
 class App extends Component {
   constructor(props){
@@ -19,13 +28,17 @@ class App extends Component {
     let customers = [];
 
     this.state = {
-      customers: customers
+      customers: customers,
+      perPage: 2
     };
+
+    this.getCustomers();
 
     this.onDelete = this.onDelete.bind(this);
     this.onAdd = this.onAdd.bind(this);
     this.onEditSubmit = this.onEditSubmit.bind(this);
     this.filterByName = this.filterByName.bind(this);
+    this.onChangePage = this.onChangePage.bind(this);
   }
 
   componentWillMount(){
@@ -33,17 +46,21 @@ class App extends Component {
     this.setState({ customers });
   }
 
-  getCustomers(){
-    axios.get('http://localhost:3000/customers')
-    .then(response => this.setState({ customers: response.data }));
+  getCustomers(page = 1, limit = this.state.perPage) {
+    axios.get(`http://localhost:3000/customers`)
+    .then(response => this.setState(() => {
+      return {
+        totalPage: response.data.length
+      }
+    }, () => axios.get(`http://localhost:3000/customers?_page=${page}&_limit=${limit}`)
+    .then(result => this.setState({customers: result.data}))
+    ))
   }
 
   onDelete(id){
     axios.delete(`http://localhost:3000/customers/${id}`)
     .then(res => {
-      console.log(res.data);
       this.getCustomers();
-      //this.setState({ customers });
     })
 
   }
@@ -51,26 +68,47 @@ class App extends Component {
   onAdd(customer) {
     axios.post('http://localhost:3000/customers',customer)
     .then(res => {
-      console.log(res.data);
       this.getCustomers();
-      //this.setState({ customers });
     });
   }
 
   onEditSubmit(customer, id) {
     axios.put(`http://localhost:3000/customers/${id}`, customer)
     .then(res => {
-      console.log(res.data);
       this.getCustomers();
     });
   }
 
   filterByName(event) {
     let filterBy = event.target.value.toLowerCase();
-    axios.get('http://localhost:3000/customers?name_like=' + filterBy)
-    .then(response => this.setState({ customers: response.data }));
+
+    axios.get(`http://localhost:3000/customers?name_like=${filterBy}`)
+    .then(response => this.setState(() => {
+          return {
+            totalPage: response.data.length
+          }
+        }, () => axios.get(`http://localhost:3000/customers?name_like=${filterBy}&_page=1&_limit=${this.state.perPage}`)
+        .then(result => this.setState({customers: result.data}))
+    ))
+
   }
 
+  onChangePage(pageOfItems) {
+    // update state with new page of items
+    this.setState({ pageOfItems: pageOfItems });
+  }
+
+
+  handlePageClick = (page, pageSize) => {
+
+      axios.get(`http://localhost:3000/customers?_page=${page}&_limit=${pageSize}`)
+      .then(response => this.setState({
+            customers: response.data,
+            current: page
+          }
+      ));
+
+  };
 
   render() {
     const title = 'Customer Manager';
@@ -89,8 +127,8 @@ class App extends Component {
 
           <div className="container">
             <div className="input-group mb-4">
-              <div class="input-group-prepend">
-                <div class="input-group-text">Filter by name: </div>
+              <div className="input-group-prepend">
+                <div className="input-group-text">Filter by name: </div>
               </div>
               <input type="text" id="filter"
                    onChange={this.filterByName}
@@ -115,6 +153,14 @@ class App extends Component {
               );
             }) : <p>Não tem nada</p>
           }
+          <br/>
+          <Pagination
+              onChange={this.handlePageClick}
+              total={this.state.totalPage}
+              pageSize={this.state.perPage}
+              current={this.state.current || 1}
+              defaultCurrent={1}
+          />
         </div>
 
         <div className="container">
