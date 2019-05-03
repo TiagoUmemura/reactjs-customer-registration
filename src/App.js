@@ -5,6 +5,9 @@ import AddProduct from './AddProduct';
 import axios from 'axios'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { Pagination, Table } from 'antd';
+import { connect } from 'react-redux';
+import {clickButton} from "./actions";
+import { bindActionCreators } from "redux";
 
 const columns = [{
   title: 'Nome',
@@ -21,13 +24,18 @@ const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},
   {name: 'Page C', uv: 450, pv: 2800, amt: 2400},
   {name: 'Page D', uv: 500, pv: 2800, amt: 2400}];
 
-class App extends Component {
-  constructor(props){
-    super(props);
+var headers = {
+  'Content-Type': 'application/json'
+}
+
+export class App extends Component {
+  constructor(){
+    super();
 
     let customers = [];
 
     this.state = {
+      newValue: 'aaa',
       customers: customers,
       perPage: 2
     };
@@ -112,10 +120,15 @@ class App extends Component {
 
   render() {
     const title = 'Customer Manager';
+    const { newValue } = this.props;
 
     return (
       <div className="App">
         <h1 className="alert alert-info">{title}</h1>
+
+        <a href="#" onClick={() => this.props.clickButton("AAAAAAAA")} >aaaaaaaaaaaaaaa</a>
+
+        <h1>{newValue}</h1>
 
         <AddProduct
           onAdd = {this.onAdd}
@@ -180,4 +193,16 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  console.log('aaa', state);
+  return {
+    newValue: state.clickState.newValue
+  }
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators( { clickButton }, dispatch);
+
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default ConnectedApp
