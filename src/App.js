@@ -126,7 +126,7 @@ export class App extends Component {
       <div className="App">
         <h1 className="alert alert-info">{title}</h1>
 
-        <a href="#" onClick={() => this.props.clickButton("AAAAAAAA")} >aaaaaaaaaaaaaaa</a>
+        <a href="#" onClick={() => this.props.clickButton("Atualizado via redux")} >aaaaaaaaaaaaaaa</a>
 
         <h1>{newValue}</h1>
 
